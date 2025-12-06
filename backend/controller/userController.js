@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
+// create user
 export const userCreate = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -27,6 +28,7 @@ export const userCreate = async (req, res) => {
   }
 };
  
+// login
 export const authUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -54,6 +56,13 @@ export const authUser = async (req, res) => {
       }
     );
 
+      res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,              // true for HTTPS
+      sameSite: "none",          // important for frontend on another domain
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     res.status(200).json({
       message: "Login successful.",
       token,
@@ -70,3 +79,13 @@ export const authUser = async (req, res) => {
 };
 
 
+// logout
+export const logoutUser = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+
+  res.status(200).json({ message: "Logged out successfully" });
+};

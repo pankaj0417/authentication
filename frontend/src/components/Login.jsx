@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { data, Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 const Login = () => {
   const {
@@ -22,6 +24,7 @@ const Login = () => {
     try {
       const res = await fetch("http://localhost:5000/api/user/login", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: data.email,

@@ -1,24 +1,27 @@
-import express, { json } from "express"
-import connectDB from "./config/db.js"
+import express, { json } from "express";
+import connectDB from "./config/db.js";
 import dotenv from "dotenv";
 import route from "./routes/userRoutes.js";
-import cors from "cors"
+import cors from "cors";
+import cookieParser from "cookie-parser";
 dotenv.config();
 
-const app = express()
-connectDB()
+const app = express();
+connectDB();
 
-app.use(cors({
-  origin:"http://localhost:5173",
-  credentials:true
-}))
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
-
-app.use(express.json())
-app.use("/api/user",route)
+app.use(cookieParser());
+app.use(express.json());
+app.use("/api/user", route);
 
 const PORT = process.env.PORT;
 
-app.listen(PORT,()=>{
-  console.log("running on port :",PORT);
-})
+app.listen(PORT, () => {
+  console.log("running on port :", PORT);
+});
